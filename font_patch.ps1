@@ -3,61 +3,18 @@
 $ErrorActionPreference = "Stop"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-function Get-SteamLibraries {
-    $roots = New-Object System.Collections.Generic.List[string]
-    foreach ($rk in @("HKCU:\Software\Valve\Steam", "HKLM:\SOFTWARE\WOW6432Node\Valve\Steam", "HKLM:\SOFTWARE\Valve\Steam")) {
-        try {
-            $v = Get-ItemProperty -Path $rk -ErrorAction Stop
-            foreach ($name in @("SteamPath", "InstallPath")) {
-                $sp = $v.$name
-                if ($sp) { $roots.Add(($sp -replace '/', '\')) }
-            }
-        } catch {}
-    }
-    $roots.Add("C:\Program Files (x86)\Steam")
-    foreach ($d in (Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -match '^[A-Z]:\\$' })) {
-        foreach ($sub in @("Steam", "SteamLibrary", "Program Files (x86)\Steam", "Program Files\Steam", "Games\Steam")) {
-            $roots.Add((Join-Path $d.Root $sub))
-        }
-    }
-    $libs = New-Object System.Collections.Generic.List[string]
-    foreach ($r in $roots) {
-        if (-not (Test-Path $r)) { continue }
-        $libs.Add($r)
-        $vdf = Join-Path $r "steamapps\libraryfolders.vdf"
-        if (Test-Path $vdf) {
-            foreach ($m in [regex]::Matches((Get-Content $vdf -Raw), '"path"\s+"([^"]+)"')) {
-                $libs.Add($m.Groups[1].Value.Replace('\\', '\'))
-            }
-        }
-    }
-    return @($libs | Select-Object -Unique)
-}
+. (Join-Path $here "common.ps1")
 
-$game = $null
-if ($GamePath) {
-    $GamePath = $GamePath.Trim('"').Trim()
-    $c = Join-Path $GamePath "Schedule I_Data\sharedassets0.assets"
-    if (Test-Path $c) { $game = $c }
+$gameRoot = Resolve-GamePath $GamePath
+if (-not $gameRoot) {
+    if (-not $NoPause) { pause }
+    exit 1
 }
-if (-not $game) {
-    foreach ($lib in (Get-SteamLibraries)) {
-        $c = Join-Path $lib "steamapps\common\Schedule I\Schedule I_Data\sharedassets0.assets"
-        if (Test-Path $c) { $game = $c; break }
-    }
-}
-if (-not $game) {
-    Write-Host "게임 파일을 자동으로 찾지 못했습니다." -ForegroundColor Yellow
-    Write-Host "Steam 라이브러리에서 Schedule I 우클릭 > 관리 > 로컬 파일 보기 로 열리는 폴더의 경로를 복사해 붙여넣으세요."
-    $inp = Read-Host "Schedule I 게임 폴더 경로"
-    if ($inp) { $inp = $inp.Trim('"').Trim() }
-    if ($inp -and (Test-Path (Join-Path $inp "Schedule I_Data\sharedassets0.assets"))) {
-        $game = Join-Path $inp "Schedule I_Data\sharedassets0.assets"
-    } else {
-        Write-Host "해당 경로에서 게임 파일을 찾을 수 없습니다." -ForegroundColor Red
-        if (-not $NoPause) { pause }
-        exit 1
-    }
+$game = Join-Path $gameRoot "Schedule I_Data\sharedassets0.assets"
+if (-not (Test-Path $game)) {
+    Write-Host ("게임 파일이 없습니다: " + $game) -ForegroundColor Red
+    if (-not $NoPause) { pause }
+    exit 1
 }
 if (Get-Process -Name "Schedule I" -ErrorAction SilentlyContinue) { Write-Host "게임을 먼저 종료하세요." -ForegroundColor Red; pause; exit 1 }
 
@@ -68,7 +25,9 @@ Write-Host ("대상: " + $game)
 Write-Host ("폰트: 을지로체 (" + [math]::Round($ttf.Length/1KB,0) + " KB)")
 
 # 백업
-$bakDir = Join-Path (Split-Path (Split-Path $game)) "BepInEx\Translation\_backup"
+# (예전 버전은 BepInEx 폴더에 백업했으므로 그 백업이 있으면 계속 사용)
+$bakDir = Join-Path $gameRoot "BepInEx\Translation\_backup"
+if (-not (Test-Path (Join-Path $bakDir "sharedassets0.assets.original"))) { $bakDir = Join-Path $gameRoot "KoreanPatch_backup" }
 New-Item -ItemType Directory -Force $bakDir | Out-Null
 $bak = Join-Path $bakDir "sharedassets0.assets.original"
 if (-not (Test-Path $bak)) { Copy-Item $game $bak; Write-Host "원본 백업 생성" }

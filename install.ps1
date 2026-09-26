@@ -1,58 +1,22 @@
 ﻿# Schedule I 한글패치 통합 설치기
-# BepInEx / XUnity.AutoTranslator가 없으면 공식 저장소에서 자동 설치합니다.
+# 모드 로더(BepInEx 또는 MelonLoader)와 번역기가 없으면 공식 저장소에서 자동 설치합니다.
+param([string]$Loader = "")
 $ErrorActionPreference = "Stop"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 try { Get-ChildItem $here -Recurse -File | Unblock-File -ErrorAction SilentlyContinue } catch {}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $here "common.ps1")
+
+$XuatVersion = "5.6.1"
+$MelonVersion = "0.7.3"
+
 Write-Host "==============================================" -ForegroundColor Cyan
 Write-Host "   Schedule I 한글패치 설치기" -ForegroundColor Cyan
 Write-Host "==============================================" -ForegroundColor Cyan
 
-# ---------- 1) 게임 경로 찾기 (레지스트리로 Steam 위치 파악) ----------
-function Get-SteamLibraries {
-    $roots = New-Object System.Collections.Generic.List[string]
-    foreach ($rk in @("HKCU:\Software\Valve\Steam", "HKLM:\SOFTWARE\WOW6432Node\Valve\Steam", "HKLM:\SOFTWARE\Valve\Steam")) {
-        try {
-            $v = Get-ItemProperty -Path $rk -ErrorAction Stop
-            foreach ($name in @("SteamPath", "InstallPath")) {
-                $sp = $v.$name
-                if ($sp) { $roots.Add(($sp -replace '/', '\')) }
-            }
-        } catch {}
-    }
-    $roots.Add("C:\Program Files (x86)\Steam")
-    foreach ($d in (Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Root -match '^[A-Z]:\\$' })) {
-        foreach ($sub in @("Steam", "SteamLibrary", "Program Files (x86)\Steam", "Program Files\Steam", "Games\Steam")) {
-            $roots.Add((Join-Path $d.Root $sub))
-        }
-    }
-    $libs = New-Object System.Collections.Generic.List[string]
-    foreach ($r in $roots) {
-        if (-not (Test-Path $r)) { continue }
-        $libs.Add($r)
-        $vdf = Join-Path $r "steamapps\libraryfolders.vdf"
-        if (Test-Path $vdf) {
-            foreach ($m in [regex]::Matches((Get-Content $vdf -Raw), '"path"\s+"([^"]+)"')) {
-                $libs.Add($m.Groups[1].Value.Replace('\\', '\'))
-            }
-        }
-    }
-    return @($libs | Select-Object -Unique)
-}
-
-$gamePath = $null
-foreach ($lib in (Get-SteamLibraries)) {
-    $c = Join-Path $lib "steamapps\common\Schedule I"
-    if (Test-Path (Join-Path $c "Schedule I.exe")) { $gamePath = $c; break }
-}
-if (-not $gamePath) {
-    Write-Host "게임 폴더를 자동으로 찾지 못했습니다." -ForegroundColor Yellow
-    Write-Host "Steam 라이브러리에서 Schedule I 우클릭 > 관리 > 로컬 파일 보기 로 열리는 폴더의 경로를 복사해 붙여넣으세요."
-    $gamePath = Read-Host "Schedule I 게임 폴더 경로"
-    if ($gamePath) { $gamePath = $gamePath.Trim('"').Trim() }
-    if (-not $gamePath -or -not (Test-Path (Join-Path $gamePath "Schedule I.exe"))) { Write-Host "잘못된 경로입니다." -ForegroundColor Red; pause; exit 1 }
-}
+# ---------- 1) 게임 경로 ----------
+$gamePath = Resolve-GamePath
+if (-not $gamePath) { pause; exit 1 }
 Write-Host ("게임 경로: " + $gamePath) -ForegroundColor Green
 
 if (Get-Process -Name "Schedule I" -ErrorAction SilentlyContinue) {
@@ -63,62 +27,149 @@ if (Get-Process -Name "Schedule I" -ErrorAction SilentlyContinue) {
 $tmp = Join-Path $env:TEMP "s1kr_setup"
 New-Item -ItemType Directory -Force $tmp | Out-Null
 
-# ---------- 2) BepInEx 자동 설치 ----------
-if (-not (Test-Path (Join-Path $gamePath "BepInEx\core\BepInEx.Core.dll"))) {
-    Write-Host "[1/4] BepInEx 다운로드 중... (공식 빌드 서버)" -ForegroundColor Cyan
-    $bepUrl = "https://builds.bepinex.dev/projects/bepinex_be/733/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.733%2B995f049.zip"
-    $bepZip = Join-Path $tmp "bepinex.zip"
-    Invoke-WebRequest -Uri $bepUrl -OutFile $bepZip -UseBasicParsing
-    Expand-Archive $bepZip (Join-Path $tmp "bepinex") -Force
-    Copy-Item (Join-Path $tmp "bepinex\*") $gamePath -Recurse -Force
-    Write-Host "  BepInEx 설치 완료" -ForegroundColor Green
-} else {
-    Write-Host "[1/4] BepInEx 이미 설치됨 - 건너뜀" -ForegroundColor DarkGray
+function Get-Zip([string]$url, [string]$name) {
+    $zip = Join-Path $tmp ($name + ".zip")
+    $dir = Join-Path $tmp $name
+    Invoke-WebRequest -Uri $url -OutFile $zip -UseBasicParsing
+    if (Test-Path $dir) { Remove-Item $dir -Recurse -Force }
+    Expand-Archive $zip $dir -Force
+    return $dir
 }
 
-# ---------- 3) XUnity.AutoTranslator 자동 설치 ----------
-$xuatDll = Join-Path $gamePath "BepInEx\plugins\XUnity.AutoTranslator\XUnity.AutoTranslator.Plugin.Core.dll"
-$needXuat = $true
-if (Test-Path $xuatDll) {
-    $v = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($xuatDll).FileVersion
-    if ($v -and ([version]$v -ge [version]"5.6.1")) { $needXuat = $false }
-}
-if ($needXuat) {
-    Write-Host "[2/4] XUnity.AutoTranslator 5.6.1 다운로드 중... (GitHub 공식)" -ForegroundColor Cyan
-    $xuUrl = "https://github.com/bbepis/XUnity.AutoTranslator/releases/download/v5.6.1/XUnity.AutoTranslator-BepInEx-IL2CPP-5.6.1.zip"
-    $xuZip = Join-Path $tmp "xuat.zip"
-    Invoke-WebRequest -Uri $xuUrl -OutFile $xuZip -UseBasicParsing
-    Expand-Archive $xuZip (Join-Path $tmp "xuat") -Force
-    Copy-Item (Join-Path $tmp "xuat\BepInEx\*") (Join-Path $gamePath "BepInEx\") -Recurse -Force
-    Write-Host "  번역기 설치 완료" -ForegroundColor Green
-} else {
-    Write-Host "[2/4] 번역기 5.6.1+ 이미 설치됨 - 건너뜀" -ForegroundColor DarkGray
+function Test-XuatVersion([string]$dll) {
+    if (-not (Test-Path $dll)) { return $false }
+    $v = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($dll).FileVersion
+    return ($v -and ([version]$v -ge [version]$XuatVersion))
 }
 
-# ---------- 4) 번역 파일 + 보조 플러그인 ----------
-Write-Host "[3/4] 한글 번역 파일 설치 중..." -ForegroundColor Cyan
-$textDir = Join-Path $gamePath "BepInEx\Translation\ko\Text"
-New-Item -ItemType Directory -Force $textDir | Out-Null
-foreach ($f in (Get-ChildItem (Join-Path $here "payload\Text") -Filter "*.txt")) {
-    Copy-Item $f.FullName (Join-Path $textDir $f.Name) -Force
+function Install-Config([string]$cfg) {
+    New-Item -ItemType Directory -Force (Split-Path $cfg) | Out-Null
+    $me = "$env:USERDOMAIN\$env:USERNAME"
+    if (Test-Path $cfg) { & icacls "$cfg" /remove:d "$me" 2>&1 | Out-Null }
+    Copy-Item (Join-Path $here "payload\config\AutoTranslatorConfig.ini") $cfg -Force
+    & icacls "$cfg" /deny "${me}:(WD,AD,WEA,WA)" 2>&1 | Out-Null
 }
-Copy-Item (Join-Path $here "payload\KoreanTextFixer.dll") (Join-Path $gamePath "BepInEx\plugins\KoreanTextFixer.dll") -Force
-$stale = Join-Path $textDir "_AutoGeneratedTranslations.txt"
-if (Test-Path $stale) { Remove-Item $stale -Force }
-Write-Host "  번역 58,000여 개 + 보조 플러그인 설치 완료" -ForegroundColor Green
 
-# ---------- 5) 설정 적용 + 잠금 ----------
-Write-Host "[4/4] 번역기 설정 적용 중..." -ForegroundColor Cyan
-$cfgDir = Join-Path $gamePath "BepInEx\config"
-New-Item -ItemType Directory -Force $cfgDir | Out-Null
-$cfg = Join-Path $cfgDir "AutoTranslatorConfig.ini"
-$me = "$env:USERDOMAIN\$env:USERNAME"
-if (Test-Path $cfg) { & icacls "$cfg" /remove:d "$me" 2>&1 | Out-Null }
-Copy-Item (Join-Path $here "payload\config\AutoTranslatorConfig.ini") $cfg -Force
-& icacls "$cfg" /deny "${me}:(WD,AD,WEA,WA)" 2>&1 | Out-Null
-Write-Host "  설정 적용 및 잠금 완료 (게임이 설정을 되돌리는 것 방지)" -ForegroundColor Green
+function Install-Texts([string]$langDir) {
+    $textDir = Join-Path $langDir "Text"
+    New-Item -ItemType Directory -Force $textDir | Out-Null
+    foreach ($f in (Get-ChildItem (Join-Path $here "payload\Text") -Filter "*.txt")) {
+        Copy-Item $f.FullName (Join-Path $textDir $f.Name) -Force
+    }
+    $stale = Join-Path $textDir "_AutoGeneratedTranslations.txt"
+    if (Test-Path $stale) { Remove-Item $stale -Force }
+    $out = Join-Path $langDir "_AutoGeneratedOutput.txt"
+    if (-not (Test-Path $out)) { New-Item -ItemType File $out | Out-Null }
+}
 
-# ---------- 6) 폰트 적용 여부 확인 ----------
+# ---------- 2) 설치 방식 결정 ----------
+$state = Get-LoaderState $gamePath
+$mode = $null
+if ($Loader -match '^(?i)melon') { $mode = "Melon" }
+elseif ($Loader -match '^(?i)bep') { $mode = "BepInEx" }
+elseif ($state.Melon) {
+    $mode = "Melon"
+    Write-Host ""
+    Write-Host "MelonLoader(넥서스 모드용 로더)가 설치되어 있습니다." -ForegroundColor Yellow
+    Write-Host "다른 모드와 함께 쓸 수 있도록 MelonLoader 방식으로 설치합니다." -ForegroundColor Yellow
+}
+elseif ($state.BepFiles) { $mode = "BepInEx" }
+else {
+    Write-Host ""
+    Write-Host "----------------------------------------------" -ForegroundColor Yellow
+    Write-Host " 넥서스 모드(Nexus Mods)도 함께 쓰실 건가요?" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host " 넥서스의 Schedule I 모드는 대부분 MelonLoader가 필요합니다."
+    Write-Host " 다른 모드를 쓸 계획이 있으면 M, 한글패치만 쓸 거라면 그냥 엔터."
+    Write-Host "----------------------------------------------" -ForegroundColor Yellow
+    $ans = Read-Host " [Enter] 한글패치만 (기본) / [M] 넥서스 모드도 사용"
+    if ($ans -match '^[Mmㅡ]') { $mode = "Melon" } else { $mode = "BepInEx" }
+}
+Write-Host ("설치 방식: " + $(if ($mode -eq "Melon") { "MelonLoader" } else { "BepInEx" })) -ForegroundColor Green
+
+if ($mode -eq "BepInEx") {
+    # ---------- 3-B) BepInEx ----------
+    $off = Join-Path $gamePath "winhttp.dll.disabled_by_korean_patch"
+    if ($state.BepActive) {
+        Write-Host "[1/4] BepInEx 이미 설치됨 - 건너뜀" -ForegroundColor DarkGray
+    } elseif ($state.BepFiles -and (Test-Path $off)) {
+        Rename-Item $off "winhttp.dll"
+        Write-Host "[1/4] 꺼져 있던 BepInEx를 다시 켰습니다" -ForegroundColor Green
+    } else {
+        Write-Host "[1/4] BepInEx 다운로드 중... (공식 빌드 서버)" -ForegroundColor Cyan
+        $dir = Get-Zip "https://builds.bepinex.dev/projects/bepinex_be/733/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.733%2B995f049.zip" "bepinex"
+        Copy-Item (Join-Path $dir "*") $gamePath -Recurse -Force
+        Write-Host "  BepInEx 설치 완료" -ForegroundColor Green
+    }
+
+    if (-not (Test-XuatVersion (Join-Path $gamePath "BepInEx\plugins\XUnity.AutoTranslator\XUnity.AutoTranslator.Plugin.Core.dll"))) {
+        Write-Host "[2/4] XUnity.AutoTranslator $XuatVersion 다운로드 중... (GitHub 공식)" -ForegroundColor Cyan
+        $dir = Get-Zip "https://github.com/bbepis/XUnity.AutoTranslator/releases/download/v$XuatVersion/XUnity.AutoTranslator-BepInEx-IL2CPP-$XuatVersion.zip" "xuat_bep"
+        Copy-Item (Join-Path $dir "BepInEx\*") (Join-Path $gamePath "BepInEx\") -Recurse -Force
+        Write-Host "  번역기 설치 완료" -ForegroundColor Green
+    } else {
+        Write-Host "[2/4] 번역기 $XuatVersion+ 이미 설치됨 - 건너뜀" -ForegroundColor DarkGray
+    }
+
+    Write-Host "[3/4] 한글 번역 파일 설치 중..." -ForegroundColor Cyan
+    Install-Texts (Join-Path $gamePath "BepInEx\Translation\ko")
+    Copy-Item (Join-Path $here "payload\KoreanTextFixer.dll") (Join-Path $gamePath "BepInEx\plugins\KoreanTextFixer.dll") -Force
+    Write-Host "  번역 58,000여 개 + 보조 플러그인 설치 완료" -ForegroundColor Green
+
+    Write-Host "[4/4] 번역기 설정 적용 중..." -ForegroundColor Cyan
+    Install-Config (Join-Path $gamePath "BepInEx\config\AutoTranslatorConfig.ini")
+    Write-Host "  설정 적용 및 잠금 완료 (게임이 설정을 되돌리는 것 방지)" -ForegroundColor Green
+}
+else {
+    # ---------- 3-M) MelonLoader ----------
+    if (-not $state.Melon) {
+        Write-Host "[1/4] MelonLoader $MelonVersion 다운로드 중... (GitHub 공식)" -ForegroundColor Cyan
+        $dir = Get-Zip "https://github.com/LavaGang/MelonLoader/releases/download/v$MelonVersion/MelonLoader.x64.zip" "melonloader"
+        Copy-Item (Join-Path $dir "*") $gamePath -Recurse -Force
+        Write-Host "  MelonLoader 설치 완료" -ForegroundColor Green
+    } else {
+        Write-Host "[1/4] MelonLoader 이미 설치됨 - 건너뜀" -ForegroundColor DarkGray
+    }
+
+    # BepInEx와 MelonLoader가 동시에 켜져 있으면 서로 충돌하므로 BepInEx를 끈다 (파일은 그대로 둠)
+    if ($state.BepActive) {
+        $ours = @("XUnity.AutoTranslator", "XUnity.ResourceRedirector", "KoreanTextFixer.dll")
+        $others = @(Get-ChildItem (Join-Path $gamePath "BepInEx\plugins") -ErrorAction SilentlyContinue | Where-Object { $ours -notcontains $_.Name -and ($_.PSIsContainer -or $_.Extension -eq ".dll") })
+        if ($others.Count -gt 0) {
+            Write-Host ""
+            Write-Host "BepInEx에 한글패치 외의 플러그인이 있습니다:" -ForegroundColor Yellow
+            $others | ForEach-Object { Write-Host ("  - " + $_.Name) }
+            Write-Host "BepInEx와 MelonLoader는 동시에 쓸 수 없어서, 계속하면 위 플러그인은 작동하지 않게 됩니다." -ForegroundColor Yellow
+            $ans = Read-Host " 계속할까요? [Y] 예 / [N] 아니오"
+            if (-not ($ans -eq "" -or $ans -match '^[YyㅛJj]')) { Write-Host "설치를 취소했습니다." ; pause; exit 1 }
+        }
+        Rename-Item (Join-Path $gamePath "winhttp.dll") "winhttp.dll.disabled_by_korean_patch" -Force
+        Write-Host "  MelonLoader와 충돌하는 BepInEx를 껐습니다 (MelonLoader를 지우고 설치.bat을 다시 실행하면 BepInEx로 돌아갑니다)" -ForegroundColor Green
+    }
+
+    if (-not (Test-XuatVersion (Join-Path $gamePath "UserLibs\XUnity.AutoTranslator.Plugin.Core.dll"))) {
+        Write-Host "[2/4] XUnity.AutoTranslator $XuatVersion (MelonLoader판) 다운로드 중... (GitHub 공식)" -ForegroundColor Cyan
+        $dir = Get-Zip "https://github.com/bbepis/XUnity.AutoTranslator/releases/download/v$XuatVersion/XUnity.AutoTranslator-MelonMod-IL2CPP-$XuatVersion.zip" "xuat_melon"
+        New-Item -ItemType Directory -Force (Join-Path $gamePath "Mods") | Out-Null
+        Copy-Item (Join-Path $dir "Mods\XUnity.AutoTranslator.Plugin.MelonMod.dll") (Join-Path $gamePath "Mods\") -Force
+        Copy-Item (Join-Path $dir "UserLibs") $gamePath -Recurse -Force
+        Write-Host "  번역기 설치 완료" -ForegroundColor Green
+    } else {
+        Write-Host "[2/4] 번역기 $XuatVersion+ 이미 설치됨 - 건너뜀" -ForegroundColor DarkGray
+    }
+
+    Write-Host "[3/4] 한글 번역 파일 설치 중..." -ForegroundColor Cyan
+    Install-Texts (Join-Path $gamePath "AutoTranslator\Translation\ko")
+    New-Item -ItemType Directory -Force (Join-Path $gamePath "Mods") | Out-Null
+    Copy-Item (Join-Path $here "payload\melon\KoreanTextFixer.dll") (Join-Path $gamePath "Mods\KoreanTextFixer.dll") -Force
+    Write-Host "  번역 58,000여 개 + 보조 모드 설치 완료" -ForegroundColor Green
+
+    Write-Host "[4/4] 번역기 설정 적용 중..." -ForegroundColor Cyan
+    Install-Config (Join-Path $gamePath "AutoTranslator\Config.ini")
+    Write-Host "  설정 적용 및 잠금 완료 (게임이 설정을 되돌리는 것 방지)" -ForegroundColor Green
+}
+
+# ---------- 4) 폰트 적용 여부 확인 ----------
 Write-Host ""
 Write-Host "----------------------------------------------" -ForegroundColor Yellow
 Write-Host " 한글 폰트(을지로체)도 적용할까요?" -ForegroundColor Yellow
@@ -149,4 +200,10 @@ Write-Host ""
 Write-Host "==============================================" -ForegroundColor Green
 Write-Host "   설치 완료! 게임을 실행하세요." -ForegroundColor Green
 Write-Host "==============================================" -ForegroundColor Green
+if ($mode -eq "Melon") {
+    Write-Host ""
+    Write-Host " MelonLoader를 처음 설치했다면 첫 실행에 1~3분 정도 더 걸립니다." -ForegroundColor Yellow
+    Write-Host " (게임 코드를 변환하는 과정이며 인터넷이 필요합니다. 두 번째부터는 빠릅니다)" -ForegroundColor Yellow
+    Write-Host " 넥서스 모드는 게임 폴더의 Mods 폴더에 넣으면 한글패치와 함께 작동합니다." -ForegroundColor Yellow
+}
 pause

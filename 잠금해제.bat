@@ -1,3 +1,5 @@
 @echo off
 chcp 65001 >nul
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$cfg='C:\Program Files (x86)\Steam\steamapps\common\Schedule I\BepInEx\config\AutoTranslatorConfig.ini'; $me=\"$env:USERDOMAIN\$env:USERNAME\"; icacls $cfg /remove:d $me; Write-Host 'config unlock done'; pause"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0unlock.ps1"
+if errorlevel 1 echo [error] script failed - see message above
+pause
