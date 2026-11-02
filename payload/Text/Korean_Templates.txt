@@ -2,11 +2,11 @@
 // sr: = 값도 번역 (제품명/장소/시간)  |  r: = 값은 그대로 (금액/숫자)
 
 // --- 범용 분해 (값 번역이 필요하므로 sr:) ---
-sr:"^([^\n]+)\n([\s\S]+)$"=$1\n$2
-sr:"^([0-9]+x) ([\s\S]+)$"=$1 $2
-sr:"^([0-9]+) x ([\s\S]+)$"=$1 x $2
-sr:"^([0-9]+x [^\n]+)\n([\s\S]+)$"=$1\n$2
-sr:"^<color\=#([0-9A-Fa-f]{3,8})>([A-Za-z][^<>]*)</color>$"=<color\=#$1>$2</color>
+sr:"^(?<g1>[^\n]+)\n(?<g2>[\s\S]+)$"=${g1}\n${g2}
+sr:"^(?<g1>[0-9]+x) (?<g2>[\s\S]+)$"=${g1} ${g2}
+sr:"^(?<g1>[0-9]+) x (?<g2>[\s\S]+)$"=${g1} x ${g2}
+sr:"^(?<g1>[0-9]+x [^\n]+)\n(?<g2>[\s\S]+)$"=${g1}\n${g2}
+sr:"^<color\=#(?<g1>[0-9A-Fa-f]{3,8})>(?<g2>[A-Za-z][^<>]*)</color>$"=<color\=#${g1}>${g2}</color>
 sr:"^• ([\s\S]+)$"=• $1
 sr:"^- ([\s\S]+)$"=- $1
 sr:"^I need a dead drop:\n([\s\S]+)$"=나 데드 드랍이 필요해:\n$1
@@ -128,8 +128,8 @@ r:"^Got\ it\.\ I'll\ let\ you\ know\ when\ it's\ ready\.\ Should\ be\ about\ (.*
 r:"^Got\ it\.\ I'll\ let\ you\ know\ when\ it's\ ready\.\ Should\ be\ about\ (.*?)\ hours$"=알겠어요. 준비되면 알려드릴게요. 약 $1시간 정도 걸릴 거예요
 r:"^I\ need\ to\ collect\ the\ earnings\ <color\=\#54E717>\(\$(.*?)\)</color>\ $"=수익을 받으러 왔어 <color=#54E717>($$$1)</color>
 sr:"^Agreed\.\ I'll\ be\ (.*?)\ for\ the\ next\ 6\ hours\.$"=좋아. 앞으로 6시간 동안 $1에 있을게.
-sr:"^Ay\ bro\ you\ got\ (.*?)\?\ I'll\ pay\ (.*?)\ for\ it$"=야 형씨 $1 있어? $2 줄게
-sr:"^Ayo\ dawg,\ if\ you\ got\ (.*?)\ I'll\ pay\ (.*?)\ for\ it\.\ Deal\?$"=어이 친구, $1 있으면 $2 쳐줄게. 콜?
+sr:"^Ay\ bro\ you\ got\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)\ for\ it$"=야 형씨 ${g1} 있어? ${g2} 줄게
+sr:"^Ayo\ dawg,\ if\ you\ got\ (?<g1>.*?)\ I'll\ pay\ (?<g2>.*?)\ for\ it\.\ Deal\?$"=어이 친구, ${g1} 있으면 ${g2} 쳐줄게. 콜?
 r:"^Best\ I\ can\ do\ is\ (.*?)$"=최대한 쳐줘도 $1야
 sr:"^Cheers\ dog\.\ My\ friend\ (.*?)\ might\ like\ your\ stuff\.\ Go\ check\ them\ out$"=고맙다 친구. 내 친구 $1이(가) 네 물건을 마음에 들어 할지도 몰라. 한번 찾아가 봐
 sr:"^Cheers\.\ My\ friend\ (.*?)\ is\ a\ dealer\ and\ might\ be\ able\ to\ help\ you\ move\ your\ stuff\.\ You\ should\ go\ speak\ to\ them\.$"=고마워. 내 친구 $1은(는) 딜러인데 네 물건 파는 걸 도와줄 수 있을 거야. 가서 얘기해 봐.
@@ -140,33 +140,33 @@ sr:"^Finally\ some\ good\ stuff!\ Maybe\ go\ talk\ to\ (.*?)\.\ I\ think\ they'd
 sr:"^Got\ it\.\ I'll\ be\ (.*?)\ for\ the\ next\ 6\ hours\.$"=알았어. 앞으로 6시간 동안 $1에 있을게.
 sr:"^Got\ it\.\ I'll\ let\ you\ know\ when\ it's\ ready\.\ Should\ be\ about\ (.*?)$"=알았어. 준비되면 알려줄게. 대략 $1 정도 걸릴 거야
 r:"^Great\.\ It'll\ be\ (.*?)\ for\ the\ week,\ ok\?$"=좋아. 일주일에 $1야, 괜찮지?
-sr:"^Hello,\ I\ liked\ that\ sample\ you\ gave\ me\.\ Can\ I\ get\ (.*?)\?\ I\ can\ pay\ (.*?)$"=안녕, 저번에 준 샘플 마음에 들었어. $1 좀 살 수 있을까? $2 줄 수 있어
-sr:"^Hello,\ I'm\ after\ (.*?)\.\ I\ can\ pay\ (.*?)\ for\ it\.$"=안녕, $1 구하고 있는데. $2 줄 수 있어.
-sr:"^Hey\ dog,\ I\ need\ (.*?)\.\ I'll\ pay\ (.*?)\.\ Deal\?$"=야 친구, $1 필요해. $2 줄게. 어때?
-sr:"^Hey,\ can\ I\ get\ (.*?)\?\ I'll\ pay\ (.*?)$"=야, $1 좀 살 수 있어? $2 줄게
-sr:"^Hey,\ have\ you\ got\ (.*?)\?\ I'll\ pay\ (.*?)\ for\ it$"=야, $1 있어? $2 줄게
-sr:"^Hey,\ I\ need\ (.*?)\.\ I'll\ pay\ (.*?)\.\ Deal\?$"=야, $1 필요해. $2 줄게. 어때?
-sr:"^Hey,\ if\ you\ got\ (.*?)\ I'll\ pay\ (.*?)\ for\ it\.\ Deal\?$"=야, $1 있으면 $2 줄게. 어때?
-sr:"^Hey,\ my\ friend\ recommended\ you\.\ Can\ I\ get\ (.*?)\?\ I'll\ pay\ (.*?)\.$"=야, 내 친구가 널 추천해줬어. $1 좀 살 수 있을까? $2 줄게.
-sr:"^Hey,\ my\ friend\ said\ you\ were\ selling\ some\ good\ stuff\.\ Could\ I\ get\ (.*?)\?\ I'll\ pay\ (.*?)\ for\ it\.$"=야, 친구가 그러는데 너 물건 좋은 거 판다며. $1 좀 살 수 있을까? $2 줄게.
+sr:"^Hello,\ I\ liked\ that\ sample\ you\ gave\ me\.\ Can\ I\ get\ (?<g1>.*?)\?\ I\ can\ pay\ (?<g2>.*?)$"=안녕, 저번에 준 샘플 마음에 들었어. ${g1} 좀 살 수 있을까? ${g2} 줄 수 있어
+sr:"^Hello,\ I'm\ after\ (?<g1>.*?)\.\ I\ can\ pay\ (?<g2>.*?)\ for\ it\.$"=안녕, ${g1} 구하고 있는데. ${g2} 줄 수 있어.
+sr:"^Hey\ dog,\ I\ need\ (?<g1>.*?)\.\ I'll\ pay\ (?<g2>.*?)\.\ Deal\?$"=야 친구, ${g1} 필요해. ${g2} 줄게. 어때?
+sr:"^Hey,\ can\ I\ get\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)$"=야, ${g1} 좀 살 수 있어? ${g2} 줄게
+sr:"^Hey,\ have\ you\ got\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)\ for\ it$"=야, ${g1} 있어? ${g2} 줄게
+sr:"^Hey,\ I\ need\ (?<g1>.*?)\.\ I'll\ pay\ (?<g2>.*?)\.\ Deal\?$"=야, ${g1} 필요해. ${g2} 줄게. 어때?
+sr:"^Hey,\ if\ you\ got\ (?<g1>.*?)\ I'll\ pay\ (?<g2>.*?)\ for\ it\.\ Deal\?$"=야, ${g1} 있으면 ${g2} 줄게. 어때?
+sr:"^Hey,\ my\ friend\ recommended\ you\.\ Can\ I\ get\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)\.$"=야, 내 친구가 널 추천해줬어. ${g1} 좀 살 수 있을까? ${g2} 줄게.
+sr:"^Hey,\ my\ friend\ said\ you\ were\ selling\ some\ good\ stuff\.\ Could\ I\ get\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)\ for\ it\.$"=야, 친구가 그러는데 너 물건 좋은 거 판다며. ${g1} 좀 살 수 있을까? ${g2} 줄게.
 sr:"^Hey,\ that\ drop\ is\ ready\ (.*?)$"=야, 그 드랍 준비됐어 $1
-sr:"^Hey,\ that\ sample\ was\ some\ good\ stuff\.\ Could\ I\ get\ (.*?)\?\ I'll\ pay\ (.*?)\ for\ it\.$"=야, 그 샘플 물건 좋더라. $1 좀 살 수 있을까? $2 줄게.
-sr:"^Hey,\ you\ gave\ me\ a\ sample\ earlier\.\ Very\ nice\ stuff\.\ Can\ I\ get\ (.*?)\?\ I'll\ pay\ (.*?)\.$"=야, 아까 나한테 샘플 줬잖아. 물건 아주 좋더라. $1 좀 살 수 있을까? $2 줄게.
-sr:"^Hi\.\ My\ friend\ said\ you\ were\ selling\.\ Could\ I\ get\ (.*?)\?\ I\ can\ pay\ (.*?)$"=안녕. 친구가 너 물건 판다고 하던데. $1 좀 살 수 있을까? $2 줄 수 있어
+sr:"^Hey,\ that\ sample\ was\ some\ good\ stuff\.\ Could\ I\ get\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)\ for\ it\.$"=야, 그 샘플 물건 좋더라. ${g1} 좀 살 수 있을까? ${g2} 줄게.
+sr:"^Hey,\ you\ gave\ me\ a\ sample\ earlier\.\ Very\ nice\ stuff\.\ Can\ I\ get\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)\.$"=야, 아까 나한테 샘플 줬잖아. 물건 아주 좋더라. ${g1} 좀 살 수 있을까? ${g2} 줄게.
+sr:"^Hi\.\ My\ friend\ said\ you\ were\ selling\.\ Could\ I\ get\ (?<g1>.*?)\?\ I\ can\ pay\ (?<g2>.*?)$"=안녕. 친구가 너 물건 판다고 하던데. ${g1} 좀 살 수 있을까? ${g2} 줄 수 있어
 r:"^How\ 'bout\ (.*?)\?$"=$1 어때?
 r:"^How\ does\ (.*?)\ sound\?$"=$1면 어떨까?
 r:"^How's\ (.*?)\?$"=$1면 어때?
 r:"^Hyland\ Manor\ \((.*?)\)$"=하이랜드 저택 ($1)
 r:"^I\ can\ do\ (.*?)\.\ We\ got\ a\ deal\?$"=$1까지는 가능해. 거래할까?
 r:"^I\ can\ give\ you\ (.*?)$"=$1 줄 수 있어
-sr:"^I\ NEED\ (.*?)\.\ I\ GOT\ (.*?)\.\ DEAL\?$"=$1 필요하다고. $2 있어. 거래할래?
+sr:"^I\ NEED\ (?<g1>.*?)\.\ I\ GOT\ (?<g2>.*?)\.\ DEAL\?$"=${g1} 필요하다고. ${g2} 있어. 거래할래?
 r:"^I\ wanna\ help\ you,\ but\ I'll\ be\ out\ of\ a\ job\ if\ the\ mayor\ finds\ out\.\ I'll\ need\ (.*?)\ for\ it\ to\ be\ worth\ the\ risk\.$"=돕고는 싶은데, 시장이 알면 난 일자리를 잃어. 위험을 감수할 만하려면 $1는 받아야겠어.
-sr:"^I'm\ after\ (.*?)\.\ I\ can\ pay\ (.*?)\ for\ it\ Deal\?\?$"=$1 구하고 있어. $2 줄 수 있는데 거래할래??
+sr:"^I'm\ after\ (?<g1>.*?)\.\ I\ can\ pay\ (?<g2>.*?)\ for\ it\ Deal\?\?$"=${g1} 구하고 있어. ${g2} 줄 수 있는데 거래할래??
 r:"^Let's\ call\ it\ (.*?)\.\ Deal\?$"=$1로 하자. 콜?
 sr:"^Much\ appreciated\ mulatto\.\ Maybe\ go\ talk\ to\ (.*?)\.\ I\ think\ they'd\ like\ your\ product$"=고맙다, 친구. $1한테 가서 얘기해 봐. 네 물건을 마음에 들어 할 거야
 sr:"^Much\ appreciated\.\ Maybe\ go\ talk\ to\ (.*?)\.\ I\ think\ they'd\ like\ your\ product$"=정말 고마워. $1한테 가서 얘기해 봐. 네 물건을 마음에 들어 할 거야
-sr:"^My\ friend\ (.*?)\ can\ hook\ you\ up\ with\ (.*?)\.\ I've\ passed\ your\ number\ on\ to\ them\.$"=내 친구 $1이(가) $2를 구해줄 수 있어. 네 번호는 이미 넘겨놨어.
-sr:"^Need\ me\ (.*?)!\ I'll\ pay\ (.*?)\ yeah\?\?$"=$1 좀 필요해! $2 줄게, 어때??
+sr:"^My\ friend\ (?<g1>.*?)\ can\ hook\ you\ up\ with\ (?<g2>.*?)\.\ I've\ passed\ your\ number\ on\ to\ them\.$"=내 친구 ${g1}이(가) ${g2}를 구해줄 수 있어. 네 번호는 이미 넘겨놨어.
+sr:"^Need\ me\ (?<g1>.*?)!\ I'll\ pay\ (?<g2>.*?)\ yeah\?\?$"=${g1} 좀 필요해! ${g2} 줄게, 어때??
 r:"^Oh\ yes\ very\ good!\ (.*?)\ for\ room,\ yes\?$"=오 예, 아주 좋아요! 방은 $1, 알겠죠?
 sr:"^Okay\.\ I'll\ be\ (.*?)\ for\ the\ next\ 6\ hours\.$"=알겠어. 앞으로 6시간 동안 $1에 있을게.
 sr:"^Oooh\ very\ nice!\ My\ friend\ (.*?)\ might\ like\ your\ stuff\.\ Go\ check\ them\ out$"=오오 아주 좋은데! 내 친구 $1도 네 물건 마음에 들어 할 거야. 한번 찾아가 봐
@@ -179,24 +179,24 @@ sr:"^Thank\ you\.\ You\ should\ go\ talk\ to\ (.*?)\ -\ they\ might\ be\ able\ t
 sr:"^Thanks\ bro\.\ Hey\ my\ friend\ (.*?)\ might\ be\ interested\ in\ your\ stuff\.\ You\ should\ go\ talk\ to\ them\.$"=고맙다 형씨. 야, 내 친구 $1이(가) 네 물건에 관심 있을지도 몰라. 가서 얘기해 봐.
 sr:"^Thanks\.\ Hey\ my\ friend\ (.*?)\ might\ be\ interested\ in\ your\ stuff\.\ You\ should\ go\ talk\ to\ them\.$"=고마워. 야, 내 친구 $1이(가) 네 물건에 관심 있을지도 몰라. 가서 얘기해 봐.
 sr:"^Thanks\.\ Hey,\ my\ friend\ (.*?)\ is\ a\ dealer\ and\ can\ help\ you\ move\ your\ product\.\ You\ should\ go\ speak\ to\ them\.$"=고마워. 야, 내 친구 $1은(는) 딜러라 네 제품 파는 걸 도와줄 수 있어. 가서 얘기해 봐.
-sr:"^That'll\ be\ (.*?)\ for\ the\ (.*?)\.\ Sound\ good\?$"=$2은(는) $1야. 괜찮지?
+sr:"^That'll\ be\ (?<g1>.*?)\ for\ the\ (?<g2>.*?)\.\ Sound\ good\?$"=${g2}은(는) ${g1}야. 괜찮지?
 sr:"^The\ drop\ is\ ready\.\ You\ can\ find\ it\ (.*?)$"=드랍이 준비됐어. $1에서 찾을 수 있어
 r:"^The\ Hotbox\ \((.*?)\)$"=더 핫박스 ($1)
 r:"^The\ storage\ unit\ at\ Stash\ &\ Dash\ \((.*?)\)$"=스태시 앤 대시의 보관 창고 ($1)
 sr:"^This\ is\ good\ shit\.\ (.*?)\ might\ be\ interested\.\ You\ should\ go\ talk\ to\ them\.$"=이거 물건 좋은데. $1이(가) 관심 있을 거야. 가서 얘기해 봐.
 sr:"^Type\ must\ derive\ from\ EventBase(.*?)$"=타입은 EventBase$1에서 파생되어야 합니다
-sr:"^U\ got\ (.*?)\?\?\?\ I'll\ pay\ (.*?)\ for\ it\.\ DEAL\?$"=$1 있어??? $2 줄게. 콜?
+sr:"^U\ got\ (?<g1>.*?)\?\?\?\ I'll\ pay\ (?<g2>.*?)\ for\ it\.\ DEAL\?$"=${g1} 있어??? ${g2} 줄게. 콜?
 sr:"^Very\ nice\ bro\.\ (.*?)\ might\ be\ interested\.\ You\ should\ go\ talk\ to\ them\.$"=아주 좋아, 형씨. $1이(가) 관심 있을지도 몰라. 가서 얘기해 봐.
 sr:"^Very\ nice\.\ (.*?)\ might\ be\ interested\.\ You\ should\ go\ talk\ to\ them\.$"=아주 좋아. $1이(가) 관심 있을지도 몰라. 가서 얘기해 봐.
-sr:"^Whats\ up\ bro,\ I'm\ after\ (.*?)\.\ I\ can\ pay\ (.*?)\ for\ it\.$"=어이 형씨, $1 구하는 중인데. $2까지 낼 수 있어.
+sr:"^Whats\ up\ bro,\ I'm\ after\ (?<g1>.*?)\.\ I\ can\ pay\ (?<g2>.*?)\ for\ it\.$"=어이 형씨, ${g1} 구하는 중인데. ${g2}까지 낼 수 있어.
 sr:"^Wrapped\ ICollection(.*?)\ does\ not\ support\ indexer\.$"=래핑된 ICollection$1는 인덱서를 지원하지 않습니다.
 sr:"^Wrapped\ ICollection(.*?)\ does\ not\ support\ IndexOf\.$"=래핑된 ICollection$1는 IndexOf를 지원하지 않습니다.
 sr:"^Wrapped\ ICollection(.*?)\ does\ not\ support\ Insert\.$"=래핑된 ICollection$1는 Insert를 지원하지 않습니다.
 sr:"^Wrapped\ ICollection(.*?)\ does\ not\ support\ RemoveAt\.$"=래핑된 ICollection$1는 RemoveAt을 지원하지 않습니다.
 sr:"^Yes\ thank\ you!!\.\ Hey\ my\ friend\ (.*?)\ might\ be\ interested\ in\ your\ stuff\.\ You\ should\ go\ talk\ to\ them\.$"=응 고마워!!. 저기, 내 친구 $1이 네 물건에 관심 있을지도 몰라. 가서 한번 얘기해 봐.
-sr:"^Yo\ homie,\ can\ I\ get\ (.*?)\?\ I'll\ pay\ (.*?)$"=야 친구, $1 좀 구할 수 있을까? $2 줄게
-sr:"^You\ can\ now\ order\ (.*?)\ from\ (.*?)\.\ \1\ can\ be\ used\ to\ (.*?)\.$"=이제 $2에게서 $1을(를) 주문할 수 있습니다. $1은(는) $3에 사용할 수 있습니다.
-sr:"^You\ got\ (.*?)\?\ I'll\ pay\ (.*?)\ for\ it$"=$1 있어? $2 줄게
+sr:"^Yo\ homie,\ can\ I\ get\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)$"=야 친구, ${g1} 좀 구할 수 있을까? ${g2} 줄게
+sr:"^You\ can\ now\ order\ (?<g1>.*?)\ from\ (?<g2>.*?)\.\ \k<g1>\ can\ be\ used\ to\ (?<g3>.*?)\.$"=이제 ${g2}에게서 ${g1}을(를) 주문할 수 있습니다. ${g1}은(는) ${g3}에 사용할 수 있습니다.
+sr:"^You\ got\ (?<g1>.*?)\?\ I'll\ pay\ (?<g2>.*?)\ for\ it$"=${g1} 있어? ${g2} 줄게
 sr:"^You\ got\ some\ good\ stuff!\ You\ should\ go\ talk\ to\ (.*?)\ -\ I\ think\ they'll\ like\ your\ stuff$"=물건 좋은데! $1한테 가서 얘기해 봐 - 네 물건 마음에 들어 할 거야
 sr:"^Your\ drop\ is\ ready\.\ Grab\ it\ (.*?)$"=드랍 준비됐어. $1에서 가져가
 sr:"^Hmm\.\.\.\ Oscar\ seen\ one\ lying\ around\ somewhere\ in\ <color\=blue>(.*?)</color>\ I\ think\.\.\.$"=음... 오스카가 <color=blue>$1</color> 어딘가에 하나 굴러다니는 거 본 것 같은데...
@@ -204,25 +204,25 @@ sr:"^Oh! and I remember hearing <color\=blue>(.*?)</color> has one! Sorry, Oscar
 sr:"^Must be recommended by one of (.*?)'s connections$"=$1의 소개가 필요합니다
 sr:"^MUST BE RECOMMENDED BY ONE OF (.*?)'S CONNECTIONS$"=$1의 소개가 필요합니다
 sr:"^Oh!\ and\ I\ remember\ hearing\ <color\=blue>(.*?)</color>\ has\ one!\ Sorry,\ Oscar\ isn't\ very\ good\ with\ names\.\ Hope\ this\ helps\.$"=아! 그리고 <color=blue>$1</color>이(가) 하나 갖고 있다고 들었어! 미안, 오스카가 이름은 잘 못 외워. 도움이 됐으면 좋겠네.
-sr:"^Alright\ cool,\ I'll\ meet\ you\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=좋아 오케이, $1에서 $2부터 $3 사이에 보자.
-sr:"^Cheers\ bro,\ I'll\ meet\ you\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=고맙다 형씨, $1에서 $2부터 $3 사이에 보자.
-sr:"^Good!!\ I'll\ see\ u\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=좋아!! $1에서 $2부터 $3 사이에 보자.
-sr:"^Great,\ I'll\ meet\ you\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=좋아, $1에서 $2부터 $3 사이에 보자.
-sr:"^Hell\ yeah\ my\ friend,\ I'll\ meet\ you\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=아주 좋아 친구, $1에서 $2부터 $3 사이에 보자.
+sr:"^Alright\ cool,\ I'll\ meet\ you\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=좋아 오케이, ${g1}에서 ${g2}부터 ${g3} 사이에 보자.
+sr:"^Cheers\ bro,\ I'll\ meet\ you\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=고맙다 형씨, ${g1}에서 ${g2}부터 ${g3} 사이에 보자.
+sr:"^Good!!\ I'll\ see\ u\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=좋아!! ${g1}에서 ${g2}부터 ${g3} 사이에 보자.
+sr:"^Great,\ I'll\ meet\ you\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=좋아, ${g1}에서 ${g2}부터 ${g3} 사이에 보자.
+sr:"^Hell\ yeah\ my\ friend,\ I'll\ meet\ you\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=아주 좋아 친구, ${g1}에서 ${g2}부터 ${g3} 사이에 보자.
 r:"^Let's\ say\ (.*?)\ in\ cash,\ and\ I\ can\ get\ it\ done\ for\ you\ overnight\.$"=현금으로 $1 정도면, 하룻밤 만에 처리해 줄게.
-sr:"^Ok,\ I'll\ meet\ you\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=알았어, $2에서 $3 사이에 $1에서 보자.
-sr:"^Sick\ as,\ I'll\ meet\ you\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=개쩐다, $2에서 $3 사이에 $1에서 보자.
-sr:"^Sweet\ as\ homie,\ I'll\ meet\ you\ (.*?)\ between\ (.*?)\ and\ (.*?)\.$"=좋았어 형씨, $2에서 $3 사이에 $1에서 보자.
+sr:"^Ok,\ I'll\ meet\ you\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=알았어, ${g2}에서 ${g3} 사이에 ${g1}에서 보자.
+sr:"^Sick\ as,\ I'll\ meet\ you\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=개쩐다, ${g2}에서 ${g3} 사이에 ${g1}에서 보자.
+sr:"^Sweet\ as\ homie,\ I'll\ meet\ you\ (?<g1>.*?)\ between\ (?<g2>.*?)\ and\ (?<g3>.*?)\.$"=좋았어 형씨, ${g2}에서 ${g3} 사이에 ${g1}에서 보자.
 r:"^That'll\ be\ a\ (.*?)\ signing\ free,\ and\ the\ employee's\ daily\ wage\ will\ be\ (.*?)\.$"=계약금은 $1이고, 직원 일당은 $2야.
-sr:"^We\ need\ (.*?)\.\ You've\ got\ (.*?)\ days\ to\ get\ it\ to\ us\.\ Payment\ is\ (.*?)\.$"=$1가 필요해. $2일 안에 우리한테 넘겨. 대금은 $3다.
+sr:"^We\ need\ (?<g1>.*?)\.\ You've\ got\ (?<g2>.*?)\ days\ to\ get\ it\ to\ us\.\ Payment\ is\ (?<g3>.*?)\.$"=${g1}가 필요해. ${g2}일 안에 우리한테 넘겨. 대금은 ${g3}다.
 // === 믹스 제품명 (자동 생성 이름: 단어별로 분해해 번역) ===
-sr:"^([A-Z][a-z]+) ([A-Z][a-z]+)$"=$1 $2
+sr:"^(?<g1>[A-Z][a-z]+) (?<g2>[A-Z][a-z]+)$"=${g1} ${g2}
 // === 업데이트(v0.4.x) 조립 문장 ===
 sr:"^Reach rank ([\s\S]+?) ?to unlock this region$"=이 지역을 해제하려면 $1 랭크 달성 필요
-sr:"^Reduce cartel influence in ([\s\S]+?) to ([\s\S]+?) ?to unlock this region$"=이 지역을 해제하려면 $1의 카르텔 영향력을 $2까지 감소 필요
+sr:"^Reduce cartel influence in (?<g1>[\s\S]+?) to (?<g2>[\s\S]+?) ?to unlock this region$"=이 지역을 해제하려면 ${g1}의 카르텔 영향력을 ${g2}까지 감소 필요
 r:"^Must be within ([0-9]+) meters\.$"=$1미터 이내에 있어야 합니다.
 sr:"^Thanks for the free stuff, ([\s\S]+)$"=공짜 물건 고마워, $1
-sr:"^Your donation ([\s\S]*?)is much appreciated!([\s\S]*)$"=당신의 기부 $1정말 감사합니다!$2
+sr:"^Your donation (?<g1>[\s\S]*?)is much appreciated!(?<g2>[\s\S]*)$"=당신의 기부 ${g1}정말 감사합니다!${g2}
 // === 동사구 (단어 분해보다 먼저) ===
 sr:"^Use ([^\n<>]+)$"=$1 사용
 sr:"^Manage ([^\n<>]+)$"=$1 관리
@@ -230,9 +230,9 @@ sr:"^Open ([^\n<>]+)$"=$1 열기
 sr:"^View ([^\n<>]+)$"=$1 보기
 sr:"^Collect ([^\n<>]+)$"=$1 회수
 // === 괄호 조합 (중첩 없는 형태만) ===
-sr:"^([^()\n<>]+) \(([^()\n<>]+)\)$"=$1 ($2)
+sr:"^(?<g1>[^()\n<>]+) \((?<g2>[^()\n<>]+)\)$"=${g1} (${g2})
 // === 소유격 사물함 ===
-sr:"^(?!(?:It|He|She|That|What|Who|There|Let|Here)'s)([A-Z][a-z]+(?: [A-Z][a-z]+)?)'s ([A-Z][^\n<>]+)$"=$1의 $2
-sr:"^([\s\S]+?) will draw (?:his|her|their) daily wage of ([^ ]+) from this locker$"=$1이(가) 이 사물함에서 일당 $2을(를) 가져갑니다
-sr:"^(\d{1,2}:\d{2} [AP]M) (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$"=$1 $2
+sr:"^(?!(?:It|He|She|That|What|Who|There|Let|Here)'s)(?<g1>[A-Z][a-z]+(?: [A-Z][a-z]+)?)'s (?<g2>[A-Z][^\n<>]+)$"=${g1}의 ${g2}
+sr:"^(?<g1>[\s\S]+?) will draw (?:his|her|their) daily wage of (?<g2>[^ ]+) from this locker$"=${g1}이(가) 이 사물함에서 일당 ${g2}을(를) 가져갑니다
+sr:"^(?<g1>\d{1,2}:\d{2} [AP]M) (?<g2>Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$"=${g1} ${g2}
 r:"^You owe ([\s\S]+?) (<color\=#[0-9A-Fa-f]{3,8}>)?(\$[0-9,]+)(</color>)?\. Insert cash and exit stash to pay off your debt$"=$1에게 $2$3$4 빚졌습니다. 현금을 넣고 은닉처에서 나가면 정산됩니다

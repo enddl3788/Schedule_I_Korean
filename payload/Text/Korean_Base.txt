@@ -3147,44 +3147,44 @@ Only 1 sample product is required.=샘플 제품은 1개만 있으면 됩니다.
 There is a <color\=#88CBFF>map</color> on your phone. Press <color\=#88CBFF>M</color> to quickly open it.=휴대폰에 <color\=#88CBFF>지도</color>가 있습니다. <color\=#88CBFF>M</color> 키를 눌러 빠르게 열 수 있습니다.
 sr:"Potential Customer\\n(.*?)"=잠재 고객\n$1
 sr:"Talk to ([a-zA-Z]+)$"=$1에게 말 걸기
-sr:"Great, I'll meet you <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=좋아, <b>$1</b>에서 $2~$3 사이에 만나자.
-sr:"Hell yeah my friend, I'll meet you <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=좋았어 친구, <b>$1</b>에서 $2~$3 사이에 만나자.
-sr:"Alright cool, I'll meet you <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=그래 좋아, <b>$1</b>에서 $2~$3 사이에 만나자.
-sr:"Cheers bro, I'll meet you <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=땡큐 브로, <b>$1</b>에서 $2~$3 사이에 만나자.
-sr:"Good!! I'll see u <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=좋아!! <b>$1</b>에서 $2~$3 사이에 보자.
-sr:"Ok, I'll meet you <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=알겠어, <b>$1</b>에서 $2~$3 사이에 만나자.
-sr:"Sick as, I'll meet you <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=개쩐다, <b>$1</b>에서 $2~$3 사이에 만나자.
-sr:"Sweet as homie, I'll meet you <b>(.*?)<\/b> between (\d{1,2}:\d{2} ?[AP]M) and (\d{1,2}:\d{2} ?[AP]M)."=죽이는데 친구, <b>$1</b>에서 $2~$3 사이에 만나자.
-sr:"Ayo dawg, if you got ([0-9]+x )?(.*?) I'll pay <color\=#46CB4F>\$(.*?)</color> for it. Deal\?"=야 친구, $1$2 있으면 <color\=#46CB4F>$$3</color>에 살게. 어때?
-sr:"Hello, I'm after ([0-9]+x )?(.*?). I can pay <color\=#46CB4F>\$(.*?)</color> for it."=안녕, $1$2 구하고 있어. <color\=#46CB4F>$$3</color>까지 낼 수 있어.
-sr:"Ay bro you got ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color> for it"=어이 브로, $1$2 있어? <color\=#46CB4F>$$3</color>에 살게
-sr:"Hey, can I get ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color>"=야, $1$2 좀 줄래? <color\=#46CB4F>$$3</color> 낼게
-sr:"You got ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color> for it"=$1$2 있어? <color\=#46CB4F>$$3</color>에 살게
-sr:"U got ([0-9]+x )?(.*?)\?\?\? I'll pay <color\=#46CB4F>\$(.*?)</color> for it. DEAL\?"=$1$2 있냐??? <color\=#46CB4F>$$3</color>에 살게. 콜?
+sr:"Great, I'll meet you <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=좋아, <b>${g1}</b>에서 ${g2}~${g3} 사이에 만나자.
+sr:"Hell yeah my friend, I'll meet you <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=좋았어 친구, <b>${g1}</b>에서 ${g2}~${g3} 사이에 만나자.
+sr:"Alright cool, I'll meet you <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=그래 좋아, <b>${g1}</b>에서 ${g2}~${g3} 사이에 만나자.
+sr:"Cheers bro, I'll meet you <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=땡큐 브로, <b>${g1}</b>에서 ${g2}~${g3} 사이에 만나자.
+sr:"Good!! I'll see u <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=좋아!! <b>${g1}</b>에서 ${g2}~${g3} 사이에 보자.
+sr:"Ok, I'll meet you <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=알겠어, <b>${g1}</b>에서 ${g2}~${g3} 사이에 만나자.
+sr:"Sick as, I'll meet you <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=개쩐다, <b>${g1}</b>에서 ${g2}~${g3} 사이에 만나자.
+sr:"Sweet as homie, I'll meet you <b>(?<g1>.*?)<\/b> between (?<g2>\d{1,2}:\d{2} ?[AP]M) and (?<g3>\d{1,2}:\d{2} ?[AP]M)."=죽이는데 친구, <b>${g1}</b>에서 ${g2}~${g3} 사이에 만나자.
+sr:"Ayo dawg, if you got (?<g1>[0-9]+x )?(?<g2>.*?) I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it. Deal\?"=야 친구, ${g1}${g2} 있으면 <color\=#46CB4F>$${g3}</color>에 살게. 어때?
+sr:"Hello, I'm after (?<g1>[0-9]+x )?(?<g2>.*?). I can pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it."=안녕, ${g1}${g2} 구하고 있어. <color\=#46CB4F>$${g3}</color>까지 낼 수 있어.
+sr:"Ay bro you got (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it"=어이 브로, ${g1}${g2} 있어? <color\=#46CB4F>$${g3}</color>에 살게
+sr:"Hey, can I get (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color>"=야, ${g1}${g2} 좀 줄래? <color\=#46CB4F>$${g3}</color> 낼게
+sr:"You got (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it"=${g1}${g2} 있어? <color\=#46CB4F>$${g3}</color>에 살게
+sr:"U got (?<g1>[0-9]+x )?(?<g2>.*?)\?\?\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it. DEAL\?"=${g1}${g2} 있냐??? <color\=#46CB4F>$${g3}</color>에 살게. 콜?
 sr:"^I need a dead drop:\n([\s\S]+)$"=데드 드랍 필요해:\n$1
 sr:"The drop is ready. You can find it (.*?)"=드랍 준비됐어. $1에서 찾으면 돼
 sr:"Great. It'll be (.*?) for the week, ok\?"=좋아. 일주일에 $1이야, 괜찮지?
-sr:"Hello, I liked that sample you gave me. Can I get (.*?)\? I can pay (.*?)"=안녕, 저번에 준 샘플 마음에 들었어. $1 좀 줄래? $2 낼 수 있어
-sr:"Hello, I'm after ([0-9]+x )?(.*?). I can pay <color\=#46CB4F>\$(.*?)</color> for it."=안녕, $1$2 구하고 있어. <color\=#46CB4F>$$3</color>까지 낼 수 있어.
-sr:"Hey dog, I need ([0-9]+x )?(.*?). I'll pay <color\=#46CB4F>\$(.*?)</color>. Deal\?"=어이 친구, $1$2 필요해. <color\=#46CB4F>$$3</color> 낼게. 어때?
-sr:"Hey, have you got ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color> for it"=야, $1$2 있어? <color\=#46CB4F>$$3</color>에 살게
-sr:"Hey, I need ([0-9]+x )?(.*?). I'll pay <color\=#46CB4F>\$(.*?)</color>. Deal\?"=야, $1$2 필요해. <color\=#46CB4F>$$3</color> 낼게. 콜?
-sr:"Hey, if you got ([0-9]+x )?(.*?) I'll pay <color\=#46CB4F>\$(.*?)</color> for it. Deal\?"=야, $1$2 있으면 <color\=#46CB4F>$$3</color>에 살게. 어때?
-sr:"Hey, my friend recommended you. Can I get ([0-9]+x )?(.*?)? I'll pay <color\=#46CB4F>\$(.*?)</color>."=야, 친구가 너 추천하던데. $1$2 좀 줄래? <color\=#46CB4F>$$3</color> 낼게.
-sr:"Hey, my friend said you were selling some good stuff. Could I get ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color> for it."=야, 친구가 너한테 좋은 물건 있다더라. $1$2 좀 줄 수 있어? <color\=#46CB4F>$$3</color> 낼게.
+sr:"Hello, I liked that sample you gave me. Can I get (?<g1>.*?)\? I can pay (?<g2>.*?)"=안녕, 저번에 준 샘플 마음에 들었어. ${g1} 좀 줄래? ${g2} 낼 수 있어
+sr:"Hello, I'm after (?<g1>[0-9]+x )?(?<g2>.*?). I can pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it."=안녕, ${g1}${g2} 구하고 있어. <color\=#46CB4F>$${g3}</color>까지 낼 수 있어.
+sr:"Hey dog, I need (?<g1>[0-9]+x )?(?<g2>.*?). I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color>. Deal\?"=어이 친구, ${g1}${g2} 필요해. <color\=#46CB4F>$${g3}</color> 낼게. 어때?
+sr:"Hey, have you got (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it"=야, ${g1}${g2} 있어? <color\=#46CB4F>$${g3}</color>에 살게
+sr:"Hey, I need (?<g1>[0-9]+x )?(?<g2>.*?). I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color>. Deal\?"=야, ${g1}${g2} 필요해. <color\=#46CB4F>$${g3}</color> 낼게. 콜?
+sr:"Hey, if you got (?<g1>[0-9]+x )?(?<g2>.*?) I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it. Deal\?"=야, ${g1}${g2} 있으면 <color\=#46CB4F>$${g3}</color>에 살게. 어때?
+sr:"Hey, my friend recommended you. Can I get (?<g1>[0-9]+x )?(?<g2>.*?)? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color>."=야, 친구가 너 추천하던데. ${g1}${g2} 좀 줄래? <color\=#46CB4F>$${g3}</color> 낼게.
+sr:"Hey, my friend said you were selling some good stuff. Could I get (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it."=야, 친구가 너한테 좋은 물건 있다더라. ${g1}${g2} 좀 줄 수 있어? <color\=#46CB4F>$${g3}</color> 낼게.
 sr:"Hey, that drop is ready (.*?)"=야, 그 드랍 준비됐어 $1
-sr:"Hey, that sample was some good stuff. Could I get ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color> for it."=야, 그 샘플 물건 좋더라. $1$2 좀 줄 수 있어? <color\=#46CB4F>$$3</color> 낼게.
-sr:"Hey, you gave me a sample earlier. Very nice stuff. Can I get ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color>."=야, 아까 준 샘플 진짜 좋더라. $1$2 좀 줄래? <color\=#46CB4F>$$3</color> 낼게.
-sr:"Hi. My friend said you were selling. Could I get ([0-9]+x )?(.*?)\? I can pay <color\=#46CB4F>\$(.*?)</color>"=안녕. 친구가 너 판다고 하더라. $1$2 좀 줄 수 있어? <color\=#46CB4F>$$3</color> 낼 수 있어
-sr:"I NEED ([0-9]+x )?(.*?). I GOT <color\=#46CB4F>\$(.*?)</color>. DEAL\?"=$1$2 필요하다고. <color\=#46CB4F>$$3</color> 있어. 콜?
-sr:"I'm after ([0-9]+x )?(.*?). I can pay <color\=#46CB4F>\$(.*?)</color> for it Deal\?\?"=$1$2 구하는 중이야. <color\=#46CB4F>$$3</color> 낼 수 있어 어때??
-sr:"Need me ([0-9]+x )?(.*?)! I'll pay <color\=#46CB4F>\$(.*?)</color> yeah\?\?"=$1$2 좀 필요해! <color\=#46CB4F>$$3</color> 낼게 어때??
+sr:"Hey, that sample was some good stuff. Could I get (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it."=야, 그 샘플 물건 좋더라. ${g1}${g2} 좀 줄 수 있어? <color\=#46CB4F>$${g3}</color> 낼게.
+sr:"Hey, you gave me a sample earlier. Very nice stuff. Can I get (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color>."=야, 아까 준 샘플 진짜 좋더라. ${g1}${g2} 좀 줄래? <color\=#46CB4F>$${g3}</color> 낼게.
+sr:"Hi. My friend said you were selling. Could I get (?<g1>[0-9]+x )?(?<g2>.*?)\? I can pay <color\=#46CB4F>\$(?<g3>.*?)</color>"=안녕. 친구가 너 판다고 하더라. ${g1}${g2} 좀 줄 수 있어? <color\=#46CB4F>$${g3}</color> 낼 수 있어
+sr:"I NEED (?<g1>[0-9]+x )?(?<g2>.*?). I GOT <color\=#46CB4F>\$(?<g3>.*?)</color>. DEAL\?"=${g1}${g2} 필요하다고. <color\=#46CB4F>$${g3}</color> 있어. 콜?
+sr:"I'm after (?<g1>[0-9]+x )?(?<g2>.*?). I can pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it Deal\?\?"=${g1}${g2} 구하는 중이야. <color\=#46CB4F>$${g3}</color> 낼 수 있어 어때??
+sr:"Need me (?<g1>[0-9]+x )?(?<g2>.*?)! I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color> yeah\?\?"=${g1}${g2} 좀 필요해! <color\=#46CB4F>$${g3}</color> 낼게 어때??
 sr:"Oh yes very good! (.*?) for room, yes\?"=오 좋아요! 방은 $1이에요, 괜찮죠?
-sr:"That'll be (.*?) for the (.*?). Sound good\?"=$2는 $1입니다. 어떠세요?
-sr:"That'll be (.*?) for the (.*?). We got a deal, partner\?"=$2는 $1입니다. 거래하시겠습니까, 파트너?
-sr:"That'll be a (.*?) signing free, and the employee's daily wage will be (.*?)."=계약금은 $1이고, 직원의 일당은 $2입니다.
-sr:"Whats up bro, I'm after ([0-9]+x )?(.*?). I can pay <color\=#46CB4F>\$(.*?)</color> for it."=잘 지내 브로, $1$2 구하고 있어. <color\=#46CB4F>$$3</color> 낼 수 있어.
-sr:"Yo homie, can I get ([0-9]+x )?(.*?)\? I'll pay <color\=#46CB4F>\$(.*?)</color>"=요 친구, $1$2 좀 줄래? <color\=#46CB4F>$$3</color> 낼게
+sr:"That'll be (?<g1>.*?) for the (?<g2>.*?). Sound good\?"=${g2}는 ${g1}입니다. 어떠세요?
+sr:"That'll be (?<g1>.*?) for the (?<g2>.*?). We got a deal, partner\?"=${g2}는 ${g1}입니다. 거래하시겠습니까, 파트너?
+sr:"That'll be a (?<g1>.*?) signing free, and the employee's daily wage will be (?<g2>.*?)."=계약금은 ${g1}이고, 직원의 일당은 ${g2}입니다.
+sr:"Whats up bro, I'm after (?<g1>[0-9]+x )?(?<g2>.*?). I can pay <color\=#46CB4F>\$(?<g3>.*?)</color> for it."=잘 지내 브로, ${g1}${g2} 구하고 있어. <color\=#46CB4F>$${g3}</color> 낼 수 있어.
+sr:"Yo homie, can I get (?<g1>[0-9]+x )?(?<g2>.*?)\? I'll pay <color\=#46CB4F>\$(?<g3>.*?)</color>"=요 친구, ${g1}${g2} 좀 줄래? <color\=#46CB4F>$${g3}</color> 낼게
 sr:"Thanks. Hey my friend (.*?) might be interested in your stuff. You should go talk to them."=고마워. 야, 내 친구 $1도 네 물건에 관심 있을 거야. 한번 가서 얘기해 봐.
 sr:"Thanks. Hey, my friend (.*?) is a dealer and can help you move your product. You should go speak to them."=고마워. 야, 내 친구 $1은 딜러라서 네 물건 파는 거 도와줄 수 있어. 가서 얘기해 봐.
 sr:"This is good shit. (.*?) might be interested. You should go talk to them."=이거 물건 좋네. $1도 관심 있을걸. 가서 얘기해 봐.
@@ -3203,13 +3203,13 @@ sr:"Working on it. Should be ready in around (.*?)"=하는 중이야. $1 정도�
 sr:"Your drop is ready. Grab it (.*?)"=드랍 준비됐어. $1 가져가
 sr:"Place a product here for ([a-zA-Z]+) to try"=$1이(가) 시험해 볼 제품을 여기에 놓으세요
 sr:"([a-zA-Z]+)'s favourite effects:"=$1이(가) 좋아하는 효과:
-sr:"You can find it stashed near the (.*?) and (.*?). Go grab it, head back to the RV, and we'll go from there."=$1하고 $2 근처에 숨겨뒀어. 가서 챙긴 다음 RV로 돌아와, 거기서부터 시작하자.
+sr:"You can find it stashed near the (?<g1>.*?) and (?<g2>.*?). Go grab it, head back to the RV, and we'll go from there."=${g1}하고 ${g2} 근처에 숨겨뒀어. 가서 챙긴 다음 RV로 돌아와, 거기서부터 시작하자.
 sr:"There's a powerful cartel in town, the (.*?). I figured they'd eventually be a problem, but didn't think they'd find you this quickly..."=이 동네에 강력한 카르텔이 있어, $1이라고. 언젠가 문제가 될 줄은 알았지만, 이렇게 빨리 널 찾아낼 줄은 몰랐네...
 sr:"Looks like you're gonna need somewhere low key to stay for a while. Head over to the (.*?) and ask about getting a room."=당분간 눈에 안 띄는 곳에 있어야겠어. $1로 가서 방 하나 얻을 수 있는지 물어봐.
-sr:"After that, you'll be needing some new equipment. There's a hardware store just north-east of the motel. Grab a (.*?), and (.*?)"=그 다음엔 새 장비가 좀 필요할 거야. 모텔 북동쪽에 철물점이 하나 있어. $1, 그리고 $2 챙겨
+sr:"After that, you'll be needing some new equipment. There's a hardware store just north-east of the motel. Grab a (?<g1>.*?), and (?<g2>.*?)"=그 다음엔 새 장비가 좀 필요할 거야. 모텔 북동쪽에 철물점이 하나 있어. ${g1}, 그리고 ${g2} 챙겨
 sr:"You're almost ready to go, but you're missing one key ingredient - (.*?)."=이제 거의 다 됐는데, 핵심 재료 하나가 빠졌어 - $1.
 sr:"You'll need to speak to a supplier to get your hands on some seeds. I've passed your number onto (.*?) - the local weed seed supplier."=씨앗을 구하려면 공급자랑 얘기해야 해. 네 번호를 $1한테 넘겨놨어 - 이 동네 대마 씨앗 공급자야.
-sr:"Send him a (.*?) and request a (.*?). I've vouched for you so you won't have to pay up front. Your order will go on your tab, which you can pay off in the future."=$1 하나 보내서 $2 요청해. 내가 보증해줬으니까 선불로 낼 필요는 없어. 주문은 외상으로 달아놓고 나중에 갚으면 돼.
+sr:"Send him a (?<g1>.*?) and request a (?<g2>.*?). I've vouched for you so you won't have to pay up front. Your order will go on your tab, which you can pay off in the future."=${g1} 하나 보내서 ${g2} 요청해. 내가 보증해줬으니까 선불로 낼 필요는 없어. 주문은 외상으로 달아놓고 나중에 갚으면 돼.
 sr:"(.*)Plant a weed seed in the empty pot"=$1빈 화분에 대마 씨앗 심기
 sr:"(.*)Drive into town"=$1시내로 운전해 가기
 sr:"(.*)Purchase 2x soil from the hardware store"=$1철물점에서 흙 2개 구매하기
@@ -3242,7 +3242,7 @@ sr:"(.*)Schedule your first deal"=$1첫 거래 잡기
 sr:"(.*)Purchase at least one mixing ingredient"=$1혼합 재료 최소 1개 구매하기
 sr:"(.*)Talk to the real estate agent"=$1부동산 중개인에게 말 걸기
 sr:"(.*)Open the map app to see your potential customers"=$1지도 앱을 열어 잠재 고객 확인하기
-sr:"(.*)Unlock 10 customers \((\d{1,2})/10\)"=$1고객 10명 확보하기 ($2/10)
+sr:"(?<g1>.*)Unlock 10 customers \((?<g2>\d{1,2})/10\)"=${g1}고객 10명 확보하기 (${g2}/10)
 sr:"(.*)Purchase a business at Ray's Realty"=$1레이 부동산에서 사업체 구매하기
 sr:"(.*)Collect the stash near the fountain"=$1분수대 근처의 은닉처 회수하기
 sr:"(.*)Head back to the motel room"=$1모텔 방으로 돌아가기
@@ -3277,7 +3277,7 @@ sr:"(.*)Purchase acid from Oscar"=$1오스카에게서 산 구매하기
 sr:"(.*)Message Shirley about buying some pseudo"=$1셜리에게 슈도 구매에 대해 메시지 보내기
 sr:"(.*)Wait for Benji to complete a deal"=$1벤지가 거래를 완료할 때까지 기다리기
 sr:"(.*)Reach 'friendly' relationship status with Chloe, Ludwig, or Beth"=$1클로이, 루트비히 또는 베스와 '친근한' 관계 달성하기
-sr:"(.*)Complete 3 deals \((\d{1,2})/3\)"=$1거래 3회 완료하기 ($2/3)
+sr:"(?<g1>.*)Complete 3 deals \((?<g2>\d{1,2})/3\)"=${g1}거래 3회 완료하기 (${g2}/3)
 sr:"(.*)Wait for the dead drop"=$1데드 드랍 기다리기
 sr:"(.*)Open your phone and read your messages"=$1휴대폰을 열어 메시지 읽기
 sr:"(.*)Bake the liquid meth with the lab oven"=$1랩 오븐으로 액상 메스 굽기
@@ -3326,8 +3326,8 @@ sr:"(.*)Assign at least 3 customers to Benji"=$1벤지에게 고객 3명 이상 
 sr:"(.*)Wait for the laundering operation to complete"=$1돈세탁 작업이 완료될 때까지 기다리기
 sr:"(.*)Select a friend of an unlocked customer in your contacts app"=$1연락처 앱에서 잠금 해제된 고객의 친구 선택하기
 sr:"(.*)Unlock the pseudo supplier in Westville \(see contacts app for more info\)"=$1웨스트빌의 슈도 공급자 잠금 해제하기 (자세한 내용은 연락처 앱 참고)
-sr:"Deal for ([A-Za-z]+)<color\=([a-zA-Z#0-9]+)> \(((?:Begins|Expires) in [0-9]+ (?:min|hrs))\)</color>"=$1 거래<color\=$2> ($3)</color>
-sr:"([0-9]+x)\s?([0-9A-Za-z ']+),(.*?)$"=$1 $2,$3
+sr:"Deal for (?<g1>[A-Za-z]+)<color\=(?<g2>[a-zA-Z#0-9]+)> \((?<g3>(?:Begins|Expires) in [0-9]+ (?:min|hrs))\)</color>"=${g1} 거래<color\=${g2}> (${g3})</color>
+sr:"(?<g1>[0-9]+x)\s?(?<g2>[0-9A-Za-z ']+),(?<g3>.*?)$"=${g1} ${g2},${g3}
 sr:"^Deal completed for (.+)$"=$1와의 거래 완료
 sr:"^Select items to order from (.+)$"=$1에게서 주문할 물품을 선택하세요
 sr:"Agreed\. I'll be (.*?) for the next 6 hours\."=좋아. 앞으로 6시간 동안 $1에 있을게.

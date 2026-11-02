@@ -133,5 +133,6 @@ FONT_LICENSE.md           ← 폰트 라이선스 고지
 - 번역은 `payload/Text/` 의 텍스트 파일에 `영어원문=한국어` 형식으로 들어 있습니다.
   - `Korean_Base.txt` 기본 UI·대사, `Korean_Extracted.txt` 게임에서 추출한 문장, `Korean_Composites.txt` 이름·지역 조합, `Korean_Templates.txt` 숫자·이름이 끼어드는 문장용 정규식 규칙
   - 줄바꿈은 `\n`, 원문에 `=`가 있으면 `\=`로 씁니다.
+  - `sr:` 규칙에 괄호 그룹이 2개 이상이면 번호(`$1`, `$2`) 대신 **이름 그룹**을 쓰세요: `(?<g1>...)` / `${g1}`. 번역기가 `$2` 같은 번호를 단순 문자열로 바꾸기 때문에, 번호를 쓰면 `$250` 같은 금액 안의 `$2`까지 바뀌어 금액이 깨집니다.
 - 게임 중 `Alt + R`을 누르면 파일을 다시 읽어서, 게임을 껐다 켜지 않고 바로 확인할 수 있습니다.
 - 보조 플러그인을 고치려면 `src/` 참고: BepInEx판은 `src/KoreanTextFixer`, MelonLoader판은 `src/KoreanTextFixer.Melon` 에서 `dotnet build -c Release -p:GameDir="게임 폴더"`로 빌드합니다. (MelonLoader판은 MelonLoader로 게임을 한 번 실행해 `MelonLoader\Il2CppAssemblies`가 생성된 상태여야 합니다)
